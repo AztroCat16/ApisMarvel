@@ -10,4 +10,6 @@ public interface CharactersService {
 
     List<CharactersDTO> getCharacters();
 
+    CharactersDTO getCharacter(int id);
+
 }

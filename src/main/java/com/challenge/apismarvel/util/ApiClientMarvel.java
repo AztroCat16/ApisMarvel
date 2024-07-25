@@ -28,6 +28,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -48,7 +49,6 @@ public class ApiClientMarvel {
 
     private final ObjectMapper objectMapper;
 
-    @Autowired
     public ApiClientMarvel() {
         this.restTemplate = new RestTemplate();
         this.headers = new HttpHeaders();
@@ -56,7 +56,7 @@ public class ApiClientMarvel {
         this.objectMapper = new ObjectMapper();
     }
 
-    private String getCharacters() {
+    public List<MarvelResponseDTO> getCharacters() {
 
         String ts = String.valueOf(System.currentTimeMillis());
         String apikey = appConfig.getPublicKey();
@@ -74,7 +74,29 @@ public class ApiClientMarvel {
                 apikey,
                 sb);
 
-        return response.getBody();
+        return getResponseMarvel(response.getBody());
+    }
+
+    public List<MarvelResponseDTO> getCharactersId(int id) {
+
+        String ts = String.valueOf(System.currentTimeMillis());
+        String apikey = appConfig.getPublicKey();
+
+        String toHash = ts + appConfig.getPrivateKey() + apikey;
+        String sb = getMD5(toHash);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                appConfig.getMarvelApi() + "characters/{id}?ts={ts}&apikey={apikey}&hash={sb}",
+                HttpMethod.GET,
+                new HttpEntity<>(headers),
+                new ParameterizedTypeReference<>() {
+                },
+                id,
+                ts,
+                apikey,
+                sb);
+
+        return getResponseMarvel(response.getBody());
     }
 
     private String getMD5(String str) {
@@ -95,11 +117,10 @@ public class ApiClientMarvel {
         }
     }
 
-    public List<MarvelResponseDTO> getResponseMarvel() {
-        final String response = getCharacters();
+    private List<MarvelResponseDTO> getResponseMarvel(String responseMarvel) {
 
         try {
-            JSONObject responseJSON = new JSONObject(response);
+            JSONObject responseJSON = new JSONObject(responseMarvel);
             if (responseJSON.has("data")) {
                 String dataString = responseJSON.getJSONObject("data").get("results").toString();
                 return objectMapper.readValue(dataString, new TypeReference<>() {

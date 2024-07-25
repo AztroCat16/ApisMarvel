@@ -7,6 +7,7 @@ import com.challenge.apismarvel.services.CharactersService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,6 +30,11 @@ public class CharactersController {
         return new ApiResponseDTO<>(SUCCESS, CONTINUE, new ResponseCharactersDTO(list.size(), list));
     }
 
-    
+    @GetMapping("/{id}")
+    public ApiResponseDTO<CharactersDTO> getCharacter(@PathVariable("id") int id)  {
+        CharactersDTO character = charactersService.getCharacter(id);
+
+        return new ApiResponseDTO<>(SUCCESS, CONTINUE, character);
+    }
 
 }
