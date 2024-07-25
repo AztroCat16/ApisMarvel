@@ -1,0 +1,10 @@
+server:
+  servlet:
+    context-path: /v1
+  port: 8080
+
+app:
+  publicKey: 14bdd0d0200017def1590ea18768ef7a
+  privateKey: 8b2baa2915aff416c8f869431b3d151cae36cc35
+
+  marvelApi: https://gateway.marvel.com:443/v1/public/
