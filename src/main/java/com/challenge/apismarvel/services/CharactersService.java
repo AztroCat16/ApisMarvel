@@ -12,4 +12,6 @@ public interface CharactersService {
 
     CharactersDTO getCharacter(int id);
 
+    List<CharactersDTO> getCharacters(Integer limit);
+
 }

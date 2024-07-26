@@ -77,6 +77,28 @@ public class ApiClientMarvel {
         return getResponseMarvel(response.getBody());
     }
 
+    public List<MarvelResponseDTO> getCharacters(Integer limit) {
+
+        String ts = String.valueOf(System.currentTimeMillis());
+        String apikey = appConfig.getPublicKey();
+
+        String toHash = ts + appConfig.getPrivateKey() + apikey;
+        String sb = getMD5(toHash);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                appConfig.getMarvelApi() + "characters?limit={limit}&ts={ts}&apikey={apikey}&hash={sb}",
+                HttpMethod.GET,
+                new HttpEntity<>(headers),
+                new ParameterizedTypeReference<>() {
+                },
+                limit,
+                ts,
+                apikey,
+                sb);
+
+        return getResponseMarvel(response.getBody());
+    }
+
     public List<MarvelResponseDTO> getCharactersId(int id) {
 
         String ts = String.valueOf(System.currentTimeMillis());

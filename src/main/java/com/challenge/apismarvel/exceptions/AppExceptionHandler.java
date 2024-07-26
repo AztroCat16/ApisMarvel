@@ -62,7 +62,9 @@ public class AppExceptionHandler {
             apiResponse.setMessage(ex.getMessage());
         }
 
-        return new  ResponseEntity<>(apiResponse, ex.getStatusCode());
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+        return new  ResponseEntity<>(apiResponse, httpHeaders, ex.getStatusCode());
     }
 
 }
