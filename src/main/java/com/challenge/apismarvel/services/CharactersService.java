@@ -8,8 +8,6 @@ import java.util.List;
 @Service
 public interface CharactersService {
 
-    List<CharactersDTO> getCharacters();
-
     CharactersDTO getCharacter(int id);
 
     List<CharactersDTO> getCharacters(Integer limit);

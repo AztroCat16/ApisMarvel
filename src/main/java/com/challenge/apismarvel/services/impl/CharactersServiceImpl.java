@@ -24,30 +24,6 @@ public class CharactersServiceImpl implements CharactersService {
     ApiClientMarvel apiClientMarvel;
 
     @Override
-    public List<CharactersDTO> getCharacters() {
-        List<CharactersDTO> charactersList = new ArrayList<>();
-
-        List<MarvelResponseDTO> marvelResponse = apiClientMarvel.getCharacters();
-
-        if (!marvelResponse.isEmpty()) {
-
-            for (MarvelResponseDTO object : marvelResponse) {
-                CharactersDTO character = new CharactersDTO();
-
-                character.setId(object.getId());
-                character.setName(object.getName());
-                character.setDescription(object.getDescription());
-                character.setImage(object.getThumbnail().getPath() + "." + object.getThumbnail().getExtension());
-                charactersList.add(character);
-            }
-        } else {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ERROR_DATA);
-        }
-
-        return charactersList;
-    }
-
-    @Override
     public CharactersDTO getCharacter(int id) {
         CharactersDTO character = new CharactersDTO();
 

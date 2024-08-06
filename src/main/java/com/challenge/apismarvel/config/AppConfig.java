@@ -21,6 +21,8 @@ public class AppConfig {
     private String marvelApi;
     private String publicKey;
     private String privateKey;
+    private Integer minLimit;
+    private Integer maxLimit;
 
     private String allowedOrigins = "*";
     private String allowedMethods = "GET";
